@@ -1,0 +1,27 @@
+pipeline {
+	agent {
+		node {
+			label 'node2'
+		}
+	}
+
+	stages {
+		stage('Build') {
+			steps {
+				echo 'Building...'
+				echo 'Building more...'
+				sleep 20
+			}
+		}
+		stage('Test'){
+			steps {
+				echo 'Testing...'
+			}
+		}
+		stage('Deploy'){
+			steps {
+				echo 'Deploying...'
+			}
+		}
+	}
+}
