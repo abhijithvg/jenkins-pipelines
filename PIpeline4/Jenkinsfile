@@ -1,0 +1,34 @@
+pipeline {
+	agent any
+	
+	stages {
+		stage('Build') {
+			agent {
+				node {
+					label 'node2'
+				}
+			}
+			steps {
+				echo 'Building...'
+				echo 'Building more...'
+				sleep 20
+			}
+		}
+		stage('Test'){
+			agent {
+				node {
+					label 'node1'
+				}
+			}
+			steps {
+				echo 'Testing...'
+				build job: 'AbhiJ1'
+			}
+		}
+		stage('Deploy'){
+			steps {
+				echo 'Deploying...'
+			}
+		}
+	}
+}
