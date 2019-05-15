@@ -1,0 +1,47 @@
+pipeline {
+	agent any
+
+	stages {
+		stage('Build') {
+			agent {
+				node {
+					label 'node2'
+				}
+			}
+			steps {
+				echo 'Building...'
+				echo 'Building more...'
+				sleep 20
+			}
+		}
+		stage('Test'){
+			agent {
+				node {
+					label 'node1'
+				}
+			}
+			steps {
+				echo 'Testing...'
+				build job: 'AbhiJ1', parameters: [[$class: 'StringParameterValue', name: 'target', value: target], [$class: 'BooleanParameterValue', name: 'update_composer', value: update_composer.toBoolean()]]
+			}
+		}
+		stage('Deploy'){
+			steps {
+				echo 'Deploying...'
+			}
+			failFast true   #to force your parallel stages to all be aborted when one of them fails
+			parallel {
+          stage('In Parallel 1') {
+              steps {
+                  echo "In Parallel 1"
+              }
+          }
+          stage('In Parallel 2') {
+              steps {
+                  echo "In Parallel 2"
+              }
+          }
+      }
+		}
+	}
+}
