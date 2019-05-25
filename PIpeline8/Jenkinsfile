@@ -1,22 +1,15 @@
 pipeline {
     agent any
 
-    stages {
-      stage('Example1') {
-          if (env.BRANCH_NAME == 'master') {
-              echo 'I only execute on the master branch'
-          } else {
-              echo 'I execute elsewhere'
-          }
-      }
-      stage('Example2') {
-        try {
-            sh 'exit 1'
+    stage('Conditionals') {
+        steps {
+            script {
+                if (env.HOME == '/root') {
+                    echo "Test path value is master"
+                } else {
+                    echo "Test path value is not master"
+                }
+            }
         }
-        catch (exc) {
-            echo 'Something failed!'
-            throw
-        }
-      }
     }
 }
